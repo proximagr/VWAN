@@ -118,8 +118,8 @@ module AzFirewallA 'modules/azure-firewall-location1.bicep' = if (deployFirewall
     location: location
     deployFirewallBasic: deployFirewallBasic
     fwAvnetName: fwAvnetName
-    fwpolicyid: firewallpolicy.outputs.fwpolicyid
-    logAnalyticsWorkspaceId: firewallogs.outputs.logAnalyticsWorkspaceId
+    fwpolicyid: deployFirewall ? firewallpolicy.outputs.fwpolicyid : ''
+    logAnalyticsWorkspaceId: deployFirewall ? firewallogs.outputs.logAnalyticsWorkspaceId : ''
     numberOfFirewallPublicIPAddresses: numberOfFirewallPublicIPAddresses
   }
 }
@@ -132,8 +132,8 @@ module AzFirewallB 'modules/azure-firewall-location2.bicep' = if (deployFirewall
     location: location2
     deployFirewallBasic: deployFirewallBasic
     fwBvnetName: fwBvnetName
-    fwpolicyid: firewallpolicy.outputs.fwpolicyid
-    logAnalyticsWorkspaceId: firewallogs.outputs.logAnalyticsWorkspaceId
+    fwpolicyid: deployFirewall ? firewallpolicy.outputs.fwpolicyid : ''
+    logAnalyticsWorkspaceId: deployFirewall ? firewallogs.outputs.logAnalyticsWorkspaceId : ''
     numberOfFirewallPublicIPAddresses: numberOfFirewallPublicIPAddresses
   }
 }
