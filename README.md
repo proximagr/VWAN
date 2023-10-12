@@ -12,3 +12,5 @@ You can choose to:
   * deploy Azure Firewall or not
   * how many Public IPs will be created and attached to the Azure Firewalls
   * The Azure Firewall SKU between Basic and Standard
+
+The script does NOT deploy the connections between the VWAN Hubs & the VNETS. Once the VWAN Hubs are ready, with Hub Status Succeeded <b>and</b> Router Status Provisioned, create the connections manually.
