@@ -27,5 +27,5 @@ az group create --name ResourceGroupName --location PreferedLocation
 **deploy the bicep script with the required parameters and choose true false**
 az deployment group create --resource-group ResourceGroupName --template-file main.bicep --parameters numberOfFirewallPublicIPAddresses=1 adminPassword='#########' adminUserName='######' deployVWAN=true deployFirewall=true deployFirewallBasic=true deployVMs=true
 
-# Deploymnet Diagram
+# Deployment Diagram
 ![vwan10](https://github.com/proximagr/VWAN/assets/4180413/9f2d1915-e6ee-4cc2-abe6-0a1f581da14b)
