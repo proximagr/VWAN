@@ -1,4 +1,4 @@
-# VWAN
+# VWAN Lab
 Bicep scripts to create Azure VWAN & Azure Firewall
 
 The script deploys:
