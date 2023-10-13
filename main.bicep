@@ -6,6 +6,9 @@ param vhubAName string = 'NEUVHub'
 param vhubBName string = 'WEUVHub'
 param vwanhubAaddressspace string = '10.100.0.0/24'
 param vwanhubBaddressspace string = '10.200.0.0/24'
+//vwan secure parameters
+param hubfwAname string = 'NEUHubFW'
+param hubfwBname string = 'WEUHubFW'
 //vnet parameters
 param fwAvnetName string = 'WEUFWVNet'
 param fwBvnetName string = 'NEUFWVNet'
@@ -47,6 +50,7 @@ var tags = {
 
 //choose what to deploy
 param deployVWAN bool
+param addFirewallToVWAN bool
 param deployFirewall bool
 param deployFirewallBasic bool
 param deployVMs bool
@@ -81,6 +85,11 @@ module vwan './modules/vwan.bicep' = if (deployVWAN) {
     vhubBName: vhubBName
     vwanhubAaddressspace: vwanhubAaddressspace
     vwanhubBaddressspace: vwanhubBaddressspace
+    addFirewallToVWAN: addFirewallToVWAN
+    hubfwAname: addFirewallToVWAN ? hubfwAname : ''
+    hubfwBname: addFirewallToVWAN ? hubfwBname : ''
+    fwpolicyid: deployFirewall ? firewallpolicy.outputs.fwpolicyid : ''
+    logAnalyticsWorkspaceId: deployFirewall ? firewallogs.outputs.logAnalyticsWorkspaceId : ''
   }
 }
 
