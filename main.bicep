@@ -55,7 +55,7 @@ param deployFirewall bool
 param deployFirewallBasic bool
 param deployVMs bool
 
-module firewallogs 'modules/loganalytics.bicep' = if (deployFirewall) {
+module firewallogs 'modules/loganalytics.bicep' = {
   name: 'firewallogs'
   params: {
     location: location
@@ -88,8 +88,8 @@ module vwan './modules/vwan.bicep' = if (deployVWAN) {
     addFirewallToVWAN: addFirewallToVWAN
     hubfwAname: addFirewallToVWAN ? hubfwAname : ''
     hubfwBname: addFirewallToVWAN ? hubfwBname : ''
-    fwpolicyid: deployFirewall ? firewallpolicy.outputs.fwpolicyid : ''
-    logAnalyticsWorkspaceId: deployFirewall ? firewallogs.outputs.logAnalyticsWorkspaceId : ''
+    fwpolicyid: firewallpolicy.outputs.fwpolicyid
+    logAnalyticsWorkspaceId: firewallogs.outputs.logAnalyticsWorkspaceId
   }
 }
 
