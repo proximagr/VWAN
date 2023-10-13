@@ -88,7 +88,6 @@ module vwan './modules/vwan.bicep' = if (deployVWAN) {
     addFirewallToVWAN: addFirewallToVWAN
     hubfwAname: addFirewallToVWAN ? hubfwAname : ''
     hubfwBname: addFirewallToVWAN ? hubfwBname : ''
-    fwpolicyid: firewallpolicy.outputs.fwpolicyid
     logAnalyticsWorkspaceId: firewallogs.outputs.logAnalyticsWorkspaceId
   }
 }

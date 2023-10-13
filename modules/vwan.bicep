@@ -10,7 +10,6 @@ param vwanhubBaddressspace string
 param addFirewallToVWAN bool
 param hubfwAname string
 param hubfwBname string
-param fwpolicyid string
 param logAnalyticsWorkspaceId string
 
 resource vwan 'Microsoft.Network/virtualWans@2021-02-01' = {
@@ -47,7 +46,7 @@ resource vhubB 'Microsoft.Network/virtualHubs@2021-02-01' = {
 }
 
 //add firεwall to vwans
-resource AzFirewallPolicy 'Microsoft.Network/firewallPolicies@2023-05-01' = {
+resource HubFirewallPolicy 'Microsoft.Network/firewallPolicies@2023-05-01' = {
   name: 'vwanFwPolicy'
   location: location
   tags: tags
@@ -58,9 +57,9 @@ resource AzFirewallPolicy 'Microsoft.Network/firewallPolicies@2023-05-01' = {
   }
 }
 
-resource AzFirewallNetworkRuleCollection 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2023-05-01' = {
+resource HubAzFirewallNetworkRuleCollection 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2023-05-01' = {
   name: 'NetworkAllowCollection'
-  parent: AzFirewallPolicy
+  parent: HubFirewallPolicy
   properties: {
     priority: 200 
     ruleCollections: [
@@ -116,7 +115,7 @@ resource hubAzFirewallA 'Microsoft.Network/azureFirewalls@2023-05-01' = if (addF
       id: vhubA.id
     }
     firewallPolicy: {
-      id: AzFirewallPolicy.id
+      id: HubFirewallPolicy.id
     }
   }
 }
@@ -157,7 +156,7 @@ resource hubAzFirewallB 'Microsoft.Network/azureFirewalls@2023-05-01' = if (addF
       id: vhubB.id
     }
     firewallPolicy: {
-      id: AzFirewallPolicy.id
+      id: HubFirewallPolicy.id
     }
   }
 }
