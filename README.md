@@ -33,4 +33,4 @@ az deployment group create --resource-group ResourceGroupName --template-file ma
 az deployment group create --resource-group ResourceGroupName --template-file main.bicep --parameters numberOfFirewallPublicIPAddresses=1 adminPassword='#########' adminUserName='######' deployVWAN=true addFirewallToVWAN=true deployFirewall=true deployFirewallBasic=true deployVMs=true
 
 # Deployment Diagram
-![vwan10](https://github.com/proximagr/VWAN/assets/4180413/9f2d1915-e6ee-4cc2-abe6-0a1f581da14b)
+![vwan](https://github.com/proximagr/VWAN/assets/4180413/6c029ff9-1024-4618-82ed-d9aca040d6d1)
