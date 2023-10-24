@@ -141,12 +141,40 @@ resource fwAvnetpeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeering
   }
 }
 
+resource spokeAvnetpeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2023-05-01' = {
+  name: '${location1vnet.name}-${fwAvnet.name}'
+  parent: location1vnet
+  properties: {
+    remoteVirtualNetwork: {
+      id: fwAvnet.id
+    }
+    allowVirtualNetworkAccess: true
+    allowForwardedTraffic: true
+    allowGatewayTransit: false
+    useRemoteGateways: false
+  }
+}
+
 resource fwBvnetpeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2023-05-01' = {
   name: '${fwBvnet.name}-${location2vnet.name}'
   parent: fwBvnet
   properties: {
     remoteVirtualNetwork: {
       id: location2vnet.id
+    }
+    allowVirtualNetworkAccess: true
+    allowForwardedTraffic: true
+    allowGatewayTransit: false
+    useRemoteGateways: false
+  }
+}
+
+resource spokeBvnetpeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2023-05-01' = {
+  name: '${location2vnet.name}-${fwBvnet.name}'
+  parent: location2vnet
+  properties: {
+    remoteVirtualNetwork: {
+      id: fwBvnet.id
     }
     allowVirtualNetworkAccess: true
     allowForwardedTraffic: true
