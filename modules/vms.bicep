@@ -2,6 +2,8 @@ param adminUserName string
 param location string
 param location2 string
 param tags object
+param locationPrefix string
+param location2Prefix string
 
 @secure()
 param adminPassword string
@@ -9,7 +11,7 @@ param vmSize string
 param subnetRef array
 
 resource nInter 'Microsoft.Network/networkInterfaces@2020-06-01' = [for i in range(0, length(subnetRef)): {
-  name: 'nicvm${i}'
+  name: i < length(subnetRef)/2 ? '${locationPrefix}vm${i}nic' : '${location2Prefix}vm${i}nic'
   location: i < length(subnetRef)/2 ? location : location2
   tags: tags
   properties: {
@@ -29,7 +31,7 @@ resource nInter 'Microsoft.Network/networkInterfaces@2020-06-01' = [for i in ran
 ]
 
 resource VMs 'Microsoft.Compute/virtualMachines@2023-07-01' = [for i in range(0, length(subnetRef)): {
-  name: 'vm${i}'
+  name: i < length(subnetRef)/2 ? '${locationPrefix}vm${i}' : '${location2Prefix}vm${i}'
   dependsOn: [
     nInter[i]
   ]

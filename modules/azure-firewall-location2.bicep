@@ -4,9 +4,10 @@ param deployFirewallBasic bool
 param fwBname string
 param fwBvnetName string
 param fwpolicyid string
+param location2Prefix string
 param azureFirewallSubnetName string = 'AzureFirewallSubnet'
 param AzureFirewallManagementSubnet string = 'AzureFirewallManagementSubnet'
-param publicIPNamePrefix string = 'fwBip'
+param publicIPNamePrefix string = '${location2Prefix}vnetfwip'
 @description('Availability zone numbers e.g. 1,2,3.')
 param availabilityZones array = [
   '1'
@@ -44,7 +45,7 @@ resource fwPublicIP 'Microsoft.Network/publicIPAddresses@2021-08-01' = [for i in
 }]
 
 resource managementIp 'Microsoft.Network/publicIPAddresses@2023-05-01' = {
-  name: 'fwBManagementIp'
+  name: '${location2Prefix}VnetFWMGIp'
   location: location
   tags: tags
   sku: {

@@ -1,17 +1,19 @@
 param location string = 'northeurope'
 param location2 string = 'westeurope'
+param locationPrefix string = substring(location, 0, 3)
+param location2Prefix string = substring(location2, 0, 3)
 //vwan parameters
 param vwanName string = 'myVWAN'
-param vhubAName string = 'NEUVHub'
-param vhubBName string = 'WEUVHub'
+param vhubAName string = '${locationPrefix}VHub'
+param vhubBName string = '${location2Prefix}VHub'
 param vwanhubAaddressspace string = '10.100.0.0/24'
 param vwanhubBaddressspace string = '10.200.0.0/24'
 //vwan secure parameters
-param hubfwAname string = 'NEUHubFW'
-param hubfwBname string = 'WEUHubFW'
+param hubfwAname string = '${locationPrefix}VHubFW'
+param hubfwBname string = '${location2Prefix}VHubFW'
 //vnet parameters
-param fwAvnetName string = 'NEUFWVNet'
-param fwBvnetName string = 'WEUFWVNet'
+param fwAvnetName string = '${locationPrefix}FWVNet'
+param fwBvnetName string = '${location2Prefix}FWVNet'
 param fwAaddressPrefix string = '10.100.1.0/24'
 param fwBaddressPrefix string = '10.200.1.0/24'
 param fwsubnetAName string = 'AzureFirewallSubnet'
@@ -28,8 +30,8 @@ param location2VnetAddress string = '10.200.2.0/24'
 param location1SubnetAddress string = '10.100.2.0/28'
 param location2SubnetAddress string = '10.200.2.0/28'
 //firewall parameters
-param fwAname string = 'myFirewall'
-param fwBname string = 'myFirewall2'
+param fwAname string = '${locationPrefix}VnetFW'
+param fwBname string = '${location2Prefix}VnetFW'
 @description('Number of public IP addresses for the Azure Firewall')
 @minValue(1)
 @maxValue(100)
@@ -115,6 +117,8 @@ module fwvnets './modules/vnet.bicep' = {
     location2VnetAddress: location2VnetAddress
     location1SubnetAddress: location1SubnetAddress
     location2SubnetAddress: location2SubnetAddress
+    locationPrefix: locationPrefix
+    location2Prefix: location2Prefix
   }
 }
 
@@ -126,6 +130,7 @@ module AzFirewallA 'modules/azure-firewall-location1.bicep' = if (deployFirewall
     location: location
     deployFirewallBasic: deployFirewallBasic
     fwAvnetName: fwAvnetName
+    locationPrefix: locationPrefix
     fwpolicyid: deployFirewall ? firewallpolicy.outputs.fwpolicyid : ''
     logAnalyticsWorkspaceId: deployFirewall ? firewallogs.outputs.logAnalyticsWorkspaceId : ''
     numberOfFirewallPublicIPAddresses: numberOfFirewallPublicIPAddresses
@@ -140,6 +145,7 @@ module AzFirewallB 'modules/azure-firewall-location2.bicep' = if (deployFirewall
     location: location2
     deployFirewallBasic: deployFirewallBasic
     fwBvnetName: fwBvnetName
+    location2Prefix: location2Prefix
     fwpolicyid: deployFirewall ? firewallpolicy.outputs.fwpolicyid : ''
     logAnalyticsWorkspaceId: deployFirewall ? firewallogs.outputs.logAnalyticsWorkspaceId : ''
     numberOfFirewallPublicIPAddresses: numberOfFirewallPublicIPAddresses
@@ -158,6 +164,8 @@ module VirtualMachines 'modules/vms.bicep' = if (deployVMs) {
     adminPassword: adminPassword
     adminUserName: adminUserName
     vmSize: vmSize
+    locationPrefix: locationPrefix
+    location2Prefix: location2Prefix
     subnetRef: [
       fwvnets.outputs.fwAvnetId
       fwvnets.outputs.location1vnetId
